@@ -13,7 +13,7 @@ app.use(bodyParser.json())
 
 app.use(
     cors({
-        origin: 'https://gustavof-dev.onrender.com/'
+        origin: 'https://gustavof-dev.onrender.com'
     })
 )
 
