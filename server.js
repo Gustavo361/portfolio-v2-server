@@ -2,13 +2,12 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const nodemailer = require('nodemailer')
 const cors = require('cors')
-const path = require('path')
+
 require('dotenv').config()
 
 const app = express()
 const PORT = process.env.PORT || 3000
 
-// app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.use(
@@ -20,12 +19,30 @@ app.use(
     })
 )
 
-// app.use(express.static('public'))
+const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
 
 app.post('/enviar-email', (req, res) => {
     const userName = req.body.userName
     const userEmail = req.body.userEmail
     const userMessage = req.body.userMessage
+
+    // Verificar se o primeiro campo tem mais de 1 letra
+    if (!userName || userName.length < 2) {
+        return res.status(400).json({ success: false, error: 'O nome deve ter mais de 1 letra' });
+    }
+
+    // Verificar se o segundo campo é um e-mail válido
+    if (!userEmail || !validateEmail(userEmail)) {
+        return res.status(400).json({ success: false, error: 'Por favor, insira um e-mail válido' });
+    }
+
+    // Verificar se o terceiro campo tem mais de 5 letras
+    if (!userMessage || userMessage.length < 5) {
+        return res.status(400).json({ success: false, error: 'A mensagem deve ter mais de 5 letras' });
+    }
 
     const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -65,26 +82,10 @@ app.post('/enviar-email', (req, res) => {
     sendMail(transporter, mailOptions)
 })
 
-// app.get('/agradecimento', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'thank-you.html'))
-// })
-
-// app.get('/projects', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'index.html#projects'))
-// })
-
-// app.get('/about-me', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'index.html#about-me'))
-// })
-
-// app.get('/contact', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'index.html#contact'))
-// })
-
 app.get('/', (req, res) => {
-    res.send('Hello from the backend!')
+    res.send('Hello from the backend')
 })
 
 app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`)
+    console.log(`Server running at http://localhost:${PORT}`)
 })
