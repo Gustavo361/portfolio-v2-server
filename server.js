@@ -29,17 +29,14 @@ app.post('/enviar-email', (req, res) => {
     const userEmail = req.body.userEmail
     const userMessage = req.body.userMessage
 
-    // Verificar se o primeiro campo tem mais de 1 letra
     if (!userName || userName.length < 2) {
         return res.status(400).json({ success: false, error: 'O nome deve ter mais de 1 letra' });
     }
 
-    // Verificar se o segundo campo é um e-mail válido
     if (!userEmail || !validateEmail(userEmail)) {
         return res.status(400).json({ success: false, error: 'Por favor, insira um e-mail válido' });
     }
 
-    // Verificar se o terceiro campo tem mais de 5 letras
     if (!userMessage || userMessage.length < 5) {
         return res.status(400).json({ success: false, error: 'A mensagem deve ter mais de 5 letras' });
     }
