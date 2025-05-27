@@ -14,7 +14,11 @@ app.use(
     cors({
         origin: [
             'https://gustavof-dev.onrender.com',
-            'https://gustavof-dev.onrender.com/'
+            'https://gustavof-dev.onrender.com/',
+            'https://portfolio-v2-wql0.onrender.com/',
+            'https://portfolio-v2-wql0.onrender.com',
+            'https://portfolio-v2-server.onrender.com',
+            'https://portfolio-v2-server.onrender.com/'
         ]
     })
 )
