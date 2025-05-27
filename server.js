@@ -73,7 +73,7 @@ app.post('/enviar-email', (req, res) => {
         try {
             await transporter.sendMail(mailOptions)
             console.log('email has been sent')
-            res.json({ success: true })
+            res.json({ success: true, redirectUrl: '/thank-you.html' })
         } catch (error) {
             console.error(error)
             res.status(500).json({ success: false, error: 'Internal Server Error' })
